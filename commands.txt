@@ -1,0 +1,275 @@
+***** LINUX COMMANDS*****
+->Basic commands
+1) pwd=present working directory
+   tells you that in which directory you are in currently
+   example : if you are in desktop and if you run pwd then it will show you desktop in the output
+
+2) cd = change directory
+     example : if you run cd desktop/ it will take you to desktop dir
+     and if you run cd alone it will take you back to the root
+
+     2.1)cd .. = go to the parent dir
+     2.2)cd . = this dir (tells you current dir)
+     2.3)cd - = takes you to the previous dir you were in
+ 
+3)ls = list of directory contents
+   example: if you run ls desktop it will show you all the content of desktop dir
+   
+   ls -l = shows you contents of a dir in a listed order
+      example: if you run ls -l desktop 
+      it will show  
+
+
+
+4) cat= concatenates, depends on how do you use this command
+    example : if you run 
+    4.1)cat file1 
+    then this will show content of this file1
+
+    4.2) cat file1 file2 
+    this will show content of this file1 and file2
+
+    4.3) cat file1 file2 > newFile
+    this will concatenate the contents of file1 and file2 into the newFile
+
+    4.4) cat file1>>file2 
+    this will append the content of file1 to file2
+
+    4.5)cat -n file1
+    this will give numbered output
+
+    4.6)cat -v file1
+    this will display non printing characters of file1
+
+    4.7)cat -A file1
+    will display content including white space and tab
+
+5) man = stands for manual 
+ this gives a manual of info of a command you wanna know details of
+
+example: man ls, this will give all the info of the ls command
+
+
+***Environment variables***
+
+a storage location that has a name and a value
+
+PATH=holds the executable file for the command you run
+(to run PATH use "echo $PATH")
+
+OLDPWD= holds the info of the dir you were previously in
+(to run OLDPWD use "echo $OLDPWD")
+
+6) mkdir= make dir
+
+7)rmdir = remove dir(only those which are empty)
+
+8)rm -rf = remove dir recursively(meaning it will remove all the dir in parent dir including parent )
+
+9)ls -F= reveals the type of a file 
+ where /=dir
+       @=link
+       x=executable
+  9.1)ls -R= will give dir and its sub dir below
+  9.2)ls -t=list file by time
+  9.3)ls -r=list reverse order
+  9.4)ls -latr=long listing including all files reverse sorted by time
+
+***Permissions****
+r= read Permission
+w=write Permission
+x=executable Permission
+
+"-rw-r--r--"  here first "-" represents type(dir,link or executable) 
+
+
+****changing Permissions****
+
+10) chmod= change mod command, with this you can change Permission of a dir
+
+example : suppose in desktop u make a dir user1 and inside that u make another dir text
+inititally text has this Permission
+
+drwxr-xr-x = this means that type is d directory and rwx means user have read write and executable Permission -xr group has executable and read Permission -x means other only has executable Permission
+
+let us add w Permission to group of the text file
+ chmod g+w text this will add w Permission to the group of text file
+
+
+changing groups of a file with chgrp 
+
+move files with 
+mv "file_name" path(ex- usr/locla/desktop)
+
+
+11) umask = tells the Permission of a file in numeric form
+    11.1)umask -S = tells the Permission of a file i characters
+    example if use umask -S in dir file1 then it will display its Permissions as follows
+    u=rwx, g=rwx,o=rx
+
+
+*****Find files******
+
+12) find -name pattern  = this will seacrh for all the entries matching the pattern you have given
+    12.1) find -iname pattern = this will seacrh for the pattern but ignores the case
+    12.2) find -ls   = peforms an ls on each of the items
+    12.3) find -mtime days = find files that are days 
+    12.4) find -size num= find files that are of size num
+    12.5) find -newer file = finds files newer than file
+
+*** A fast finder ***
+
+13) locate file_name = will locate the file 
+
+****Display the contents of a file****
+
+14)cat file = displays the contents of file
+15)more file =browse throught the contents of file
+16)head file= displays the beginning or top portion of the file
+17)tail file= displays the ending or bottom portion of the file
+
+
+
+***remove files***
+18) rm file= removes file 
+   18.1) rm -r dir = removes the dir and its contents recursively
+   18.2)rm -f file = force removal and never prompt for confirmation
+
+
+***copy files***
+19) cp source_file destination_file = copies the source file to destination file
+    19.1) cp source_file1 [source_fileN.....] destination_dir= copies source files into destination dir
+    19.2)cp -i = runs in interactive mode
+    19.3)cp -r source_dir destination = copies source_dir recursively to destination    
+
+
+**** moving and renaming files****
+20) mv source destination = will move the source to the destination
+  20.1) mv -i source destination = will ask if you wanna overwrite destination
+
+***sort****
+21) sort file = sort text in file 
+  21.1) -k F = sort by key F is the field number
+  21.2)-r sort in reverse order
+  21.3)-u = sort -unique(repeatinf elements will be ignored)
+
+****compress file****
+22)gzip = compresses file
+   22.1)gunzip= uncompresses file
+   22.2)gzcat / zcat= concatenates compressed files
+   
+    
+***disk usage***
+23) du= estimte file usage
+  23.1)du -k = displays size in kb
+  23.2)du -h = displays size in human readable form
+
+
+***wildcards***
+simple commands to search files
+
+suppose if you are in a dir called file and in there, u have so many files and wanna look for a text file 
+you will use ls *txt this means find the file which is ending with txt 
+
+
+24)ls *pattern= find file ending with this pattern 
+  24.1)ls pattern* = find file starting with this pattern
+  24.2)ls ? = returns files with single character name( the more you increase the number of ? the more character files it will look for)
+example ls ??? =returns files with three character name
+
+  24.3)ls []= matches any character between brackets
+  24.4)ls[0-3]=matches charcater in between the range given inside brackets
+  24.5)ls [[:digit:]]=matches for files that has digits in name, in place of digit there can be 
+
+NOTE : i can write to a file using cmd with this command
+    echo "your content" >> file_name
+
+***compare files***
+
+25)diff file1 file2 = this will compare these files
+
+  25.1)sdiff file1 file2 = this compares two files side by side
+  25.2)vimdiff file1 file2 = this hi
+
+*** searching for content in a file***
+26)grep = searches in a file
+
+  26.1)grep -i = searches by ignoring cases
+  26.2)grep -c = counts number of occurences in a file
+  26.3)grep -n= precede output with line numbers
+  26.4)grep -v = prints lines that dont match
+ 
+***pipes***
+
+simply means using more than 1 commands together
+example cat file.txt | sort file.txt 
+this will display the contents of the file in a sorted manner
+
+
+
+****Environment variables****
+
+storage location that has a value and a name
+
+they are always in uppercase (you can create them in lower case too but it adviseed to br created in upper case only)
+
+create an Environment variable : 
+27)export VAR ="value"
+example : export TZ="US/Pacific"(TZ is a time zone Environment variable)
+   removing Environment variable
+  27.1)unset VAR 
+  example: unset TZ
+
+
+****cron ****
+
+cron = a time based job scheduling service 
+crontab= a program to perform crud operations on your job schedules
+
+crontab format 
+
+*   *    *    *   *      command
+|   |    |    |   |
+|   |    |    |   |
+|   |    |    |   |
+|   |    |    |   |
+|   |    |    |   |
+|   |    |    |   |
+|   |    |    |   |
+|   |    |    |   +---------------Day of the week
+|   |    |    |
+|   |    |    |
+|   |    |    +-------------------month of the year
+|   |    |
+|   |    |
+|   |    +------------------------Day of the month
+|   |
+|   |
+|   +-----------------------------Hour
+|
+|
++---------------------------------minute  
+
+
+yum= yellow dog updater ( a utility to interact with packages)
+it is a package management utility for red hat package manager (RPM) 
+it is used to manage the packages like install , update , search anad query etc
+
+operations are as follows
+
+yum search string = search for a string
+
+yum info [package]  = display info/or if you run it without mentioning packages it will give info of all the packages
+
+yum install [-y] package = install package, -y means if there is going to be any prompt or confirmation in between installation of sa package -y tells yum to automatically answer yes to it
+
+yum remove package = remove package
+
+yum upgrade package = update packages
+
+APT= advanced package tool, used to manage packages just like yum, dnf and rpm etc
+sudo apt update= to update package repo
+sudo apt upgrade=update installed packages 
+sudo apt install package = install a package 
+sudo apt remove package= remove a package
+sudo apt search package=search a package 
