@@ -1,6 +1,6 @@
 # Daily_updates
-
 Linux Commands and Tips
+
 This document provides an overview of common Linux commands and related tips for working with files, directories, environment variables, and package management. The commands are organized into categories for easy reference.
 
 Basic Commands
