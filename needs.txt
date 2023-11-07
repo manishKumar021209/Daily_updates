@@ -1,0 +1,7 @@
+package needed 
+1) chi 
+2)pgx database driver 
+
+studentID:=func1(name,roll)
+
+result:=func2(studentID,fn,ln)
