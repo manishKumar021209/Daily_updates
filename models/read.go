@@ -6,7 +6,8 @@ import (
 )
 
 func ReadAllStudents() ([]views.Students, error) {
-	rows, err := con.Query(context.Background(), "SELECT first_name,last_name,rollnumber FROM students")
+	rows, err := con.Query(context.Background(), "SELECT first_name,last_name,roll_number FROM students")
+
 	if err != nil {
 
 		return nil, err

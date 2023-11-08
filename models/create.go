@@ -11,10 +11,10 @@ import (
 
 func InsertStudent(stud *views.Students) (uuid.UUID, error) {
 	fmt.Println("created entry :", stud.FirstName, stud.LastName, stud.RollNumber)
-	insertStudent := `INSERT INTO students (first_name, last_name, rollNumber)
+	insertStudent := `INSERT INTO students (first_name, last_name, roll_Number)
         VALUES ($1, $2, $3)
-        ON CONFLICT (first_name, last_name) DO NOTHING
-        RETURNING id;`
+        ON CONFLICT (roll_number) DO NOTHING
+        RETURNING student_id;`
 
 	var entryID uuid.UUID
 
@@ -31,7 +31,7 @@ func InsertStudent(stud *views.Students) (uuid.UUID, error) {
 func InsertParent(studentID uuid.UUID, parent *views.Parents) error {
 	insert := `	INSERT INTO parents (student_id, parent_first_name, parent_last_name)
 	VALUES ($1, $2, $3)
-	ON CONFLICT (student_id, parent_first_name, parent_last_name) DO NOTHING;`
+	ON CONFLICT  DO NOTHING;`
 
 	_, err := con.Exec(context.Background(), insert, studentID, parent.ParentFirstName, parent.ParentLastName)
 	if err != nil {
