@@ -6,11 +6,24 @@ import (
 
 func Register() *http.ServeMux {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/create", CreateStudent)
-	mux.HandleFunc("/read", ReadAll)
-	mux.HandleFunc("/updatestudent", updateS)
-	mux.HandleFunc("/updateparent", updateP)
-	mux.HandleFunc("/delete", DeleteByID)
+
+	// Apply AuthMiddleware for protected routes
+	protectedRoutes := http.NewServeMux()
+
+	// Apply TokenAuth only to specific routes
+	protectedRoutes.Handle("/create", TokenAuth(http.HandlerFunc(CreateStudent)))
+	protectedRoutes.Handle("/read", TokenAuth(http.HandlerFunc(ReadAll)))
+	protectedRoutes.Handle("/delete", TokenAuth(http.HandlerFunc(DeleteByID)))
+
+	// Routes without TokenAuth
+
+	protectedRoutes.HandleFunc("/updatestudent", updateS)
+	protectedRoutes.HandleFunc("/updateparent", updateP)
+	protectedRoutes.HandleFunc("/createuser", createUser)
+	protectedRoutes.HandleFunc("/login", LoginUser)
+
+	// Apply AuthMiddleware to protected routes
+	mux.Handle("/", protectedRoutes)
 
 	return mux
 }

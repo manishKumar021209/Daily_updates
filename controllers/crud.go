@@ -56,6 +56,8 @@ func CreateStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func ReadAll(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("3")
+
 	if r.Method == http.MethodGet {
 		students, err := models.ReadAllStudents()
 		if err != nil {

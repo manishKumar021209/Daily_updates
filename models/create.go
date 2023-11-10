@@ -42,3 +42,17 @@ func InsertParent(studentID uuid.UUID, parent *views.Parents) error {
 	fmt.Println("Entry inserted successfully")
 	return nil
 }
+
+func InsertUser(user *views.User) error {
+	insert := `INSERT INTO USERS (username, password)
+	VALUES($1,$2);`
+
+	_, err := con.Query(context.Background(), insert, user.UserName, user.Password)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error inserting the user: %v\n", err)
+
+	}
+
+	fmt.Println("user inserted successfully")
+	return nil
+}

@@ -38,3 +38,16 @@ func ReadAllParents() ([]views.Parents, error) {
 	}
 	return parents, nil
 }
+
+func GetUser(username string) (*views.User, error) {
+	var user views.User
+
+	err := con.QueryRow(context.Background(), "SELECT username, password FROM users WHERE username = $1", username).
+		Scan(&user.UserName, &user.Password)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
