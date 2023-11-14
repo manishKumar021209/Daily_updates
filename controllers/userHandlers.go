@@ -77,17 +77,17 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"token": token})
 
-		fmt.Printf("User with username %s has logged in", details.UserName)
+		fmt.Printf("User with username %s has logged in\n", details.UserName)
 	}
 }
 
-func protectedHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	user, exists := ctx.Value("user").(string)
-	if !exists {
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Hello, %s!", user)
-}
+// func protectedHandler(w http.ResponseWriter, r *http.Request) {
+// 	ctx := r.Context()
+// 	user, exists := ctx.Value("user").(string)
+// 	if !exists {
+// 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+// 		return
+// 	}
+// 	w.WriteHeader(http.StatusOK)
+// 	fmt.Fprintf(w, "Hello, %s!", user)
+// }

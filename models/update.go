@@ -24,7 +24,7 @@ func UpdateStudent(update *views.Students) error {
 func UpdatParents(update *views.Parents) error {
 	updateParents := `UPDATE parents SET parent_first_name=$1, parent_last_name=$2 WHERE student_id =$3;`
 
-	_, err := con.Exec(context.Background(), updateParents, update.ParentFirstName, update.ParentLastName, update.StudentID)
+	_, err := con.Exec(context.Background(), updateParents, update.ParentFirstName, update.ParentLastName, update.ParentID)
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error updating parents: %v\n", err)

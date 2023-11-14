@@ -44,6 +44,8 @@ func GenerateJWT(username string) (string, error) {
 }
 
 func ExtractJWT(tokenString string) (string, error) {
+	fmt.Println("1")
+
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
@@ -51,12 +53,13 @@ func ExtractJWT(tokenString string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	fmt.Println("2")
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		username := claims["username"].(string)
 		return username, nil
 	}
-	fmt.Println("2")
+	fmt.Println("3")
 
 	return "", fmt.Errorf("Invalid token")
 

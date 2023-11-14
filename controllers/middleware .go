@@ -3,6 +3,7 @@ package controllers
 import (
 	"context"
 	"crud/auth"
+	"fmt"
 	"net/http"
 	"strings"
 )
@@ -14,15 +15,20 @@ func TokenAuth(next http.Handler) http.Handler {
 			http.Error(w, "Authorization header is missing", http.StatusUnauthorized)
 			return
 		}
-		//fmt.Println("Token:", tokenString)
+		fmt.Println("Token:", tokenString)
 		tokenString = strings.TrimPrefix(tokenString, "Bearer ")
 
 		username, err := auth.ExtractJWT(tokenString)
 		if err != nil {
-			// fmt.Println("Error extracting JWT:", err)
-			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			if strings.Contains(err.Error(), "Token is expired") {
+				http.Error(w, "Token has expired", http.StatusUnauthorized)
+			} else {
+				fmt.Println("Error extracting JWT:", err)
+				http.Error(w, "Invalid token", http.StatusUnauthorized)
+			}
 			return
 		}
+
 		ctx := r.Context()
 		ctx = context.WithValue(ctx, "user", username)
 		r = r.WithContext(ctx)

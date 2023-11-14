@@ -11,12 +11,12 @@ func Register() *http.ServeMux {
 	protectedRoutes := http.NewServeMux()
 
 	// Apply TokenAuth only to specific routes
-	protectedRoutes.Handle("/create", TokenAuth(http.HandlerFunc(CreateStudent)))
+	//protectedRoutes.Handle("/create", TokenAuth(http.HandlerFunc(CreateStudent)))
 	protectedRoutes.Handle("/read", TokenAuth(http.HandlerFunc(ReadAll)))
 	protectedRoutes.Handle("/delete", TokenAuth(http.HandlerFunc(DeleteByID)))
 
 	// Routes without TokenAuth
-
+	protectedRoutes.HandleFunc("/create", CreateStudent)
 	protectedRoutes.HandleFunc("/updatestudent", updateS)
 	protectedRoutes.HandleFunc("/updateparent", updateP)
 	protectedRoutes.HandleFunc("/createuser", createUser)
