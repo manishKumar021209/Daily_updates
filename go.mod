@@ -15,6 +15,7 @@ require (
 	github.com/jackc/pgtype v1.14.0 // indirect
 	github.com/jackc/pgx/v5 v5.5.0 // indirect
 	github.com/pborman/uuid v1.2.1 // indirect
+	github.com/rs/cors v1.10.1 // indirect
 	golang.org/x/crypto v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 )

@@ -11,6 +11,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -21,6 +22,24 @@ func main() {
 		log.Fatal(err)
 	}
 
+	allowedOrigins := []string{
+		"http://localhost:3000",
+	}
+
+	allowedMethods := []string{
+		"GET", "POST", "PUT", "DELETE", "OPTIONS",
+	}
+
+	allowedHeaders := []string{
+		"Authorization", "Content-Type",
+	}
+
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins: allowedOrigins,
+		AllowedMethods: allowedMethods,
+		AllowedHeaders: allowedHeaders,
+	}).Handler(mux)
+
 	// ApiHost := os.Getenv("API_HOST")
 	ApiPort := os.Getenv("API_PORT")
 
@@ -28,5 +47,5 @@ func main() {
 
 	// Provide the full address including the host and port
 	address := fmt.Sprintf(":%s", ApiPort)
-	log.Fatal(http.ListenAndServe(address, mux))
+	log.Fatal(http.ListenAndServe(address, corsHandler))
 }

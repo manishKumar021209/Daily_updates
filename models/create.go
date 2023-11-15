@@ -24,7 +24,7 @@ func InsertStudent(stud *views.Students) error {
 		return err
 	}
 
-	fmt.Printf("Entry inserted with id %d\n", entryID)
+	fmt.Printf("Entry inserted with id %v\n", entryID)
 	return nil
 }
 
@@ -32,7 +32,7 @@ func InsertParent(parent *views.Parents) error {
 	insert := `	with insert AS(
 		INSERT INTO parents (parent_first_name, parent_last_name)
 	VALUES ($1, $2 )
-	ON CONFLICT  DO NOTHING RETURNING parent_id
+	ON CONFLICT (parent_first_name, parent_last_name) DO NOTHING RETURNING parent_id
 	) 
 	select parent_id from insert 
 	UNION 
