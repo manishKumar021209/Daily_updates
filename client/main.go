@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	godotenv.Load(".env")
+	godotenv.Load("../.env")
 	port := os.Getenv("SERVER_PORT")
 	conn, err := grpc.Dial(port, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
