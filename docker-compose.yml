@@ -1,15 +1,7 @@
 version: '3'
 
+
 services:
-  client:
-    build:
-      context: .
-      dockerfile: ./client/Dockerfile.client
-    container_name: go-client
-    networks:
-      - go-network
-    depends_on:
-      - server
 
   server:
     build:
@@ -18,9 +10,24 @@ services:
     container_name: go-server
     networks:
       - go-network
+   
     ports:
       - "8080:8080"
+  client:
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile.client
+    container_name: go-client
+    networks:
+      - go-network
+   
+    depends_on:
+      - server
+    environment:
+      SERVER_PORT: server:8080    
 
 networks:
   go-network:
     driver: bridge
+
+

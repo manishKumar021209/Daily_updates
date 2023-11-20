@@ -10,6 +10,7 @@ RUN go mod download
 COPY ./client ./client
 COPY ./proto ./proto
 
+WORKDIR /dist/client
 
 
-CMD ["go", "run", "client/main.go"]
+CMD ["go", "run", "."]

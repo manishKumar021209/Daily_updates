@@ -30,6 +30,7 @@ RUN go mod download
 COPY ./server ./server
 COPY ./proto ./proto
 
+WORKDIR /dist/server
 
 EXPOSE 8080
-CMD ["go", "run", "server/main.go"]
+CMD ["go", "run", "."]
