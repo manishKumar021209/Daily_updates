@@ -5,11 +5,13 @@ import (
 	"log"
 	"os"
 
+	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
+	godotenv.Load(".env")
 	port := os.Getenv("SERVER_PORT")
 	conn, err := grpc.Dial(port, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -23,8 +25,8 @@ func main() {
 		Names: []string{"Akhil", "Alice", "Bob"},
 	}
 
-	// callSayHello(client)
+	callSayHello(client)
 	callSayHelloServerStream(client, names)
-	// callSayHelloClientStream(client, names)
-	// callSayHelloBidirectionalStream(client, names)
+	callSayHelloClientStream(client, names)
+	callSayHelloBidirectionalStream(client, names)
 }
