@@ -1,0 +1,298 @@
+1) create customer table
+
+CREATE TABLE customer_table(  
+    customer_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    pan_no VARCHAR(20) UNIQUE NOT NULL,
+    dob DATE NOT NULL,
+    father_or_husband_name VARCHAR(50),
+    permanent_address VARCHAR(100) NOT NULL,
+    pincode_of_permanent_address int NOT NULL,
+    gender VARCHAR(10),
+    mobile_no VARCHAR(15) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    ckyc VARCHAR(50));
+
+
+2) create customer employment details table
+
+  CREATE TABLE customer_employment_details(  
+   cid UUID NOT NULL, 
+   employment_type VARCHAR(100) NOT NULL,
+   annual_profit BIGINT NOT NULL,
+   gross_salary BIGINT NOT NULL,
+   credit_score int,
+   constraint fk_cust FOREIGN KEY(cid) REFERENCES customer_table(customer_id));
+
+3) create customer bank details table 
+    
+  CREATE TABLE customer_bank_details(  
+    cid UUID  PRIMARY KEY ,
+   Account_no VARCHAR(100) NOT NULL,
+   IFSC_code VARCHAR(100) NOT NULL,
+   constraint fk_customer FOREIGN KEY(cid) REFERENCES customer_table(customer_id));
+
+4) create employee_details table
+   
+   CREATE TABLE employee_details(  
+    emp_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+   name VARCHAR(255)NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    designation VARCHAR(200) NOT NULL);
+
+5) create loan_details table
+   
+   
+CREATE TABLE loan_details(  
+     
+   loan_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+   application_no VARCHAR(100) UNIQUE NOT NULL,
+   loan_type VARCHAR(200) NOT NULL,
+   number_of_applicants int NOT NULL,
+   loan_amount NUMERIC(10,2) NOT NULL,
+   emp_id UUID NOT NULL ,
+   date_of_lead DATE NOT NULL,
+   time_limit DATE NOT NULL,
+   rate_of_interest VARCHAR(50) NOT NULL,
+   bank_name VARCHAR(100) NOT NULL,
+   status_of_loan VARCHAR(100) NOT NULL,
+   processing_fee VARCHAR(100) NOT NULL,
+   other_charges VARCHAR(100) NOT NULL,
+   emi_amount  int NOT NULL,
+   constraint fk_employee FOREIGN KEY(emp_id) REFERENCES employee_details(emp_id));
+
+   ALTER TABLE loan_details ADD COLUMN dmid UUID REFERENCES dhan_mitra_details(dmid);
+   ALTER TABLE loan_details ADD COLUMN dev_id UUID REFERENCES developer_details(dev_id);
+
+ALTER TABLE loan_details ADD COLUMN dm_referal VARCHAR(50) REFERENCES dhan_mitra_details(referal_code);
+
+ALTER TABLE loan_details ADD COLUMN dev_referal VARCHAR(50) REFERENCES developer_details(dev_referal_code);
+
+6) REFERENCE table 
+
+  
+CREATE TABLE customer_loans(  
+   loan_id UUID ,
+   cid UUID,
+   Foreign Key (loan_id) REFERENCES loan_details(loan_id) on delete CASCADE,
+   Foreign Key (cid) REFERENCES customer_table(customer_id) on delete CASCADE);
+
+7) investment table
+   
+   CREATE TABLE investment_details(  
+    investmen_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    cid UUID NOT NULL,
+    inv_type VARCHAR(100) NOT NULL,
+    inv_amount BIGINT NOT NULL,
+    date_of_inv DATE NOT NULL,
+    emp_id UUID NOT NULL,
+    bank_or_mf_invested_in VARCHAR(100) NOT NULL,
+    status_of_inv VARCHAR(50) NOT NULL,
+    Foreign Key (cid) REFERENCES customer_table(customer_id) on delete CASCADE,
+    Foreign Key (emp_id) REFERENCES employee_details(emp_id));
+
+
+8) insurance table 
+    
+  CREATE TABLE insurance_details(  
+    insurance_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    cid UUID,
+    emp_id UUID,
+    insurance_type VARCHAR(100) NOT NULL,
+    insurance_amount VARCHAR(100) NOT NULL,
+    insurer VARCHAR(100) NOT NULL,
+    status_of_ins VARCHAR(50) NOT NULL,
+    Foreign Key (cid) REFERENCES customer_table(customer_id) on delete CASCADE,
+    Foreign Key (emp_id) REFERENCES employee_details(emp_id));
+
+9) property selling table 
+   
+   CREATE TABLE property_details(  
+   cid UUID,
+   loan_id UUID,
+   emp_id UUID,
+   project_name VARCHAR(200) NOT NULL,
+   sale_value VARCHAR(200) NOT NULL,
+   sale_status VARCHAR(200) NOT NULL,
+   Foreign Key (cid) REFERENCES customer_table(customer_id) on delete CASCADE,
+   Foreign Key (loan_id) REFERENCES loan_details(loan_id),
+   Foreign Key (emp_id) REFERENCES employee_details(emp_id)
+);
+
+ ALTER TABLE property_details ADD COLUMN dev_id UUID REFERENCES developer_details(dev_id);
+
+10) dhan mitra registration
+    
+    CREATE TABLE dhan_mitra_details(  
+    dmid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    referal_type VARCHAR(50) NOT NULL,
+    referal_code VARCHAR(100) UNIQUE NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    dob DATE NOT NULL,
+    onboard_date DATE NOT NULL,
+    pan_no VARCHAR(50) NOT NULL,
+    address VARCHAR(200) NOT NULL,
+    pincode VARCHAR(50) NOT NULL,
+    mobile VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    gender VARCHAR(20) NOT NULL,
+    incorporation_type VARCHAR(50) NOT NULL
+);
+
+
+ALTER TABLE dhan_mitra_details ADD COLUMN ds_referal_code VARCHAR(50) REFERENCES dhan_sarthi_details(referal_code);
+ALTER TABLE dhan_mitra_details ADD COLUMN onboard_date DATE NOT NULL;
+
+11) dhanmitra bank details 
+    
+    CREATE TABLE dm_bank_details(  
+    
+   dmid UUID  PRIMARY KEY ,
+   Account_no VARCHAR(100) NOT NULL,
+   IFSC_code VARCHAR(100) NOT NULL,
+   account_type VARCHAR(100) NOT NULL,
+   constraint fk_dhanmitra FOREIGN KEY(dmid) REFERENCES dhan_mitra_details(dmid));
+
+
+12) dhan sarthi registration
+   
+    CREATE TABLE dhan_sarthi_details( 
+    dsid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    referal_code VARCHAR(100) UNIQUE NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    dob DATE NOT NULL,
+    pan_no VARCHAR(20) NOT NULL,
+    address VARCHAR(100) NOT NULL,
+    pincode VARCHAR(10) NOT NULL,
+    mobile VARCHAR(20) NOT NULL,
+    email VARCHAR(20) NOT NULL,
+    gender VARCHAR(10) NOT NULL,
+    incorporation_type VARCHAR(50) NOT NULL
+);
+
+ALTER TABLE dhan_sarthi_details ADD COLUMN onboard_date DATE NOT NULL;
+
+
+
+
+13) dhansarthi bank details 
+
+ CREATE TABLE ds_bank_details(  
+    
+   dsid UUID  PRIMARY KEY,
+   Account_no VARCHAR(100) NOT NULL,
+   IFSC_code VARCHAR(50) NOT NULL,
+   account_type VARCHAR(50) NOT NULL,
+   constraint fk_dhansarthi FOREIGN KEY(dsid) REFERENCES dhan_sarthi_details(dsid));
+
+14) developer details 
+    
+    CREATE TABLE developer_details(  
+    dev_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    dev_name VARCHAR(20) NOT NULL,
+    address VARCHAR(20) NOT NULL,
+    city VARCHAR(10) NOT NULL,
+    state VARCHAR(10) NOT NULL,
+    pincode int NOT NULL,
+    email VARCHAR(10) NOT NULL,
+    status VARCHAR(10)
+);
+
+ALTER TABLE developer_details ADD COLUMN onboard_date DATE NOT NULL;
+
+
+15) dev bank details
+
+ 
+  CREATE TABLE dev_bank_details(  
+    
+   dev_id UUID  PRIMARY KEY,
+   Account_no VARCHAR(100) NOT NULL,
+   bank_name VARCHAR(50) NOT NULL,
+   IFSC_code VARCHAR(50) NOT NULL,
+   constraint fk_developer FOREIGN KEY(dev_id) REFERENCES developer_details(dev_id));
+
+16) project details
+
+    CREATE TABLE if NOT exists project_details (  
+    project_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    rera_id VARCHAR(20)  NOT NULL,
+    project_name VARCHAR(20) NOT NULL,
+    address VARCHAR(20) NOT NULL,
+    city VARCHAR(10) NOT NULL,
+    state VARCHAR(10) NOT NULL,
+    pincode int NOT NULL,
+    dev_id UUID,
+    Foreign Key (dev_id) REFERENCES developer_details(dev_id));
+
+
+ALTER TABLE property_details ADD COLUMN project_id UUID REFERENCES project_details(project_id);
+ALTER TABLE project_details ADD COLUMN project_amenities VARCHAR(100) ;
+
+
+17) typography details
+    
+    CREATE TABLE if NOT exists typography_details (  
+   typo_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+   typography VARCHAR(100) NOT NULL,
+   carpet_area VARCHAR(50) NOT NULL,
+   saleable_area VARCHAR(50) NOT NULL,
+   cost VARCHAR(100) NOT NULL,
+   property_id UUID,
+   Foreign Key (property_id) REFERENCES property_details(prop_id)   
+   );
+
+18) developer comission
+    
+   CREATE TABLE if not exists dev_comission(
+    comission_id UUID DEFAULT uuid_generate_v4() PRIMARY key,
+    loan_id UUID,
+    amount VARCHAR(50) NOT NULL,
+    transaction_date DATE NOT NULL,
+    transaction_time TIME NOT NULL,
+    transaction_id VARCHAR(50) NOT NULL,
+    Foreign Key (loan_id) REFERENCES loan_details(loan_id)
+    );
+
+19) dhanmitra comission
+   
+
+    CREATE TABLE if not exists dm_comission(
+    comission_id UUID DEFAULT uuid_generate_v4() PRIMARY key,
+    dmid UUID,
+    amount VARCHAR(50) NOT NULL,
+    transaction_date DATE NOT NULL,
+    transaction_time TIME NOT NULL,
+    transaction_id VARCHAR(50) NOT NULL,
+    Foreign Key (dmid) REFERENCES dhan_mitra_details(dmid)
+    );
+
+20) dhansarthi comission
+
+    CREATE TABLE if not exists ds_comission(
+    comission_id UUID DEFAULT uuid_generate_v4() PRIMARY key,
+    dsid UUID,
+    dmid UUID,
+    amount VARCHAR(50) NOT NULL,
+    transaction_date DATE NOT NULL,
+    transaction_time TIME NOT NULL,
+    transaction_id VARCHAR(50) NOT NULL,
+    Foreign Key (dsid) REFERENCES dhan_sarthi_details(dsid),
+    Foreign Key (dmid) REFERENCES dhan_mitra_details(dmid)
+    );
+
+21) bank list
+   CREATE TABLE bank_list(
+      bank_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      name VARCHAR(50) NOT NULL,
+      gstin_no VARCHAR(20) NOT NULL,
+      spoc_mobile VARCHAR(10) NOT NULL,
+      spoc_email VARCHAR(10) NOT NULL,
+      bank_address VARCHAR(50) NOT NULL,
+      agreement_date DATE NOT NULL
+
+
+   );
+
+
+//customer_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY  
